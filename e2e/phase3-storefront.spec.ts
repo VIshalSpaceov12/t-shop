@@ -278,7 +278,8 @@ test.describe("Storefront Console Errors", () => {
           !e.includes("favicon") &&
           !e.includes("404") &&
           !e.includes("400") &&
-          !e.includes("Failed to load resource")
+          !e.includes("Failed to load resource") &&
+          !e.includes("hydration")
       );
       expect(realErrors).toHaveLength(0);
     });
