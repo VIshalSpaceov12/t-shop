@@ -51,3 +51,13 @@ export const bannerSchema = z.object({
   isActive: z.boolean().optional(),
   sortOrder: z.number().optional(),
 });
+
+export const orderStatusSchema = z.object({
+  status: z.enum(["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"]),
+  trackingNumber: z.string().optional(),
+});
+
+export const profileSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  phone: z.string().optional(),
+});

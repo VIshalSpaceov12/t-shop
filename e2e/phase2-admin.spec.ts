@@ -113,8 +113,8 @@ test.describe("Admin Products", () => {
 
     // Should see seeded products in the table
     const table = page.locator("table");
-    await expect(table.getByText("Classic Cotton T-Shirt")).toBeVisible();
-    await expect(table.getByText("Graphic Print Tee")).toBeVisible();
+    await expect(table.getByText("Anime Oversized Tee")).toBeVisible();
+    await expect(table.getByText("Manga Art Print Tee")).toBeVisible();
   });
 
   test("products page has search and status filter", async ({ page }) => {

@@ -75,21 +75,9 @@ async function main() {
   // Create products
   const products = [
     {
-      name: "Classic Cotton T-Shirt",
-      slug: "classic-cotton-tshirt",
-      description: "A comfortable everyday essential made from 100% pure cotton.",
-      brand: "SHOP",
-      basePrice: 799,
-      sellingPrice: 499,
-      discount: 38,
-      categoryId: tshirts.id,
-      gender: "MEN" as const,
-      status: "ACTIVE" as const,
-    },
-    {
-      name: "Graphic Print Tee",
-      slug: "graphic-print-tee",
-      description: "Express yourself with this bold graphic print t-shirt.",
+      name: "Anime Oversized Tee",
+      slug: "anime-oversized-tee",
+      description: "Oversized drop-shoulder tee with bold anime-inspired graphic print. 100% cotton, perfect for the otaku streetwear look.",
       brand: "SHOP",
       basePrice: 999,
       sellingPrice: 599,
@@ -99,9 +87,21 @@ async function main() {
       status: "ACTIVE" as const,
     },
     {
-      name: "Slim Fit Joggers",
-      slug: "slim-fit-joggers",
-      description: "Comfortable slim fit joggers for everyday wear.",
+      name: "Manga Art Print Tee",
+      slug: "manga-art-print-tee",
+      description: "Express your inner weeb with this manga-style art print t-shirt. Premium quality with vibrant graphics that won't fade.",
+      brand: "SHOP",
+      basePrice: 899,
+      sellingPrice: 549,
+      discount: 39,
+      categoryId: tshirts.id,
+      gender: "MEN" as const,
+      status: "ACTIVE" as const,
+    },
+    {
+      name: "Streetwear Joggers",
+      slug: "streetwear-joggers",
+      description: "Slim fit joggers with Japanese kanji side stripe. Perfect pairing for your anime tees.",
       brand: "SHOP",
       basePrice: 1499,
       sellingPrice: 999,
@@ -111,9 +111,9 @@ async function main() {
       status: "ACTIVE" as const,
     },
     {
-      name: "Cargo Joggers",
-      slug: "cargo-joggers",
-      description: "Utility-style cargo joggers with multiple pockets.",
+      name: "Cargo Tech Joggers",
+      slug: "cargo-tech-joggers",
+      description: "Utility-style cargo joggers with techwear aesthetic. Multiple pockets, tapered fit, cyberpunk vibes.",
       brand: "SHOP",
       basePrice: 1799,
       sellingPrice: 1299,
@@ -123,9 +123,9 @@ async function main() {
       status: "ACTIVE" as const,
     },
     {
-      name: "Floral Summer Dress",
-      slug: "floral-summer-dress",
-      description: "A beautiful floral print dress perfect for summer outings.",
+      name: "Kawaii Summer Dress",
+      slug: "kawaii-summer-dress",
+      description: "Cute kawaii-inspired summer dress with playful patterns. Light and breezy for sunny adventures.",
       brand: "SHOP",
       basePrice: 1999,
       sellingPrice: 1299,
@@ -135,9 +135,9 @@ async function main() {
       status: "ACTIVE" as const,
     },
     {
-      name: "Casual Maxi Dress",
-      slug: "casual-maxi-dress",
-      description: "Elegant and comfortable maxi dress for any occasion.",
+      name: "Harajuku Maxi Dress",
+      slug: "harajuku-maxi-dress",
+      description: "Elegant maxi dress with Harajuku-inspired colorful patterns. Stand out with J-fashion style.",
       brand: "SHOP",
       basePrice: 2499,
       sellingPrice: 1799,
@@ -147,9 +147,9 @@ async function main() {
       status: "ACTIVE" as const,
     },
     {
-      name: "Crop Top",
-      slug: "crop-top",
-      description: "Trendy crop top for a stylish casual look.",
+      name: "Anime Crop Top",
+      slug: "anime-crop-top",
+      description: "Trendy crop top with anime character silhouette print. Pair with high-waist jeans for the perfect cosplay-casual look.",
       brand: "SHOP",
       basePrice: 699,
       sellingPrice: 449,
@@ -159,9 +159,9 @@ async function main() {
       status: "ACTIVE" as const,
     },
     {
-      name: "Oversized T-Shirt",
-      slug: "oversized-tshirt",
-      description: "Relaxed fit oversized t-shirt for ultimate comfort.",
+      name: "Naruto Graphic Tee",
+      slug: "naruto-graphic-tee",
+      description: "Oversized t-shirt featuring ninja-inspired graphic art. Heavy cotton, relaxed fit, street-ready.",
       brand: "SHOP",
       basePrice: 899,
       sellingPrice: 649,
@@ -171,9 +171,9 @@ async function main() {
       status: "ACTIVE" as const,
     },
     {
-      name: "Polo T-Shirt",
-      slug: "polo-tshirt",
-      description: "Classic polo t-shirt with a modern fit.",
+      name: "Dragon Art Polo",
+      slug: "dragon-art-polo",
+      description: "Classic polo with embroidered dragon art motif. Japanese-inspired design meets smart casual.",
       brand: "SHOP",
       basePrice: 1199,
       sellingPrice: 799,
@@ -183,9 +183,9 @@ async function main() {
       status: "ACTIVE" as const,
     },
     {
-      name: "Ribbed Knit Top",
-      slug: "ribbed-knit-top",
-      description: "Soft ribbed knit top with a flattering fit.",
+      name: "Sakura Knit Top",
+      slug: "sakura-knit-top",
+      description: "Soft ribbed knit top with delicate sakura (cherry blossom) pattern. Feminine and flattering.",
       brand: "SHOP",
       basePrice: 899,
       sellingPrice: 599,
@@ -195,6 +195,50 @@ async function main() {
       status: "ACTIVE" as const,
     },
   ];
+
+  // Unsplash image mapping per product (free to use)
+  const productImages: Record<string, [string, string]> = {
+    "anime-oversized-tee": [
+      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&h=800&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=800&fit=crop&q=80",
+    ],
+    "manga-art-print-tee": [
+      "https://images.unsplash.com/photo-1618517351616-38fb9c5210c6?w=600&h=800&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1523381294911-8d3cead13475?w=600&h=800&fit=crop&q=80",
+    ],
+    "streetwear-joggers": [
+      "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=600&h=800&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=800&fit=crop&q=80",
+    ],
+    "cargo-tech-joggers": [
+      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=600&h=800&fit=crop&q=80",
+    ],
+    "kawaii-summer-dress": [
+      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&h=800&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&h=800&fit=crop&q=80",
+    ],
+    "harajuku-maxi-dress": [
+      "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&h=800&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&h=800&fit=crop&q=80",
+    ],
+    "anime-crop-top": [
+      "https://images.unsplash.com/photo-1604176354204-9268737828e4?w=600&h=800&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=800&fit=crop&q=80",
+    ],
+    "naruto-graphic-tee": [
+      "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=600&h=800&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=800&fit=crop&q=80",
+    ],
+    "dragon-art-polo": [
+      "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=600&h=800&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1612336307429-8a898d10e223?w=600&h=800&fit=crop&q=80",
+    ],
+    "sakura-knit-top": [
+      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&h=800&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=600&h=800&fit=crop&q=80",
+    ],
+  };
 
   const colors = [
     { name: "Black", hex: "#000000" },
@@ -225,33 +269,36 @@ async function main() {
       }
     }
 
-    // Add placeholder images
-    await prisma.productImage.create({
-      data: {
-        productId: product.id,
-        url: `https://placehold.co/600x800/f3f4f6/a3a3a3?text=${encodeURIComponent(product.name)}`,
-        altText: product.name,
-        sortOrder: 0,
-        isPrimary: true,
-      },
-    });
-    await prisma.productImage.create({
-      data: {
-        productId: product.id,
-        url: `https://placehold.co/600x800/e5e7eb/737373?text=${encodeURIComponent(product.name)}+Back`,
-        altText: `${product.name} - Back`,
-        sortOrder: 1,
-        isPrimary: false,
-      },
-    });
+    // Add real product images from Unsplash
+    const images = productImages[product.slug];
+    if (images) {
+      await prisma.productImage.create({
+        data: {
+          productId: product.id,
+          url: images[0],
+          altText: product.name,
+          sortOrder: 0,
+          isPrimary: true,
+        },
+      });
+      await prisma.productImage.create({
+        data: {
+          productId: product.id,
+          url: images[1],
+          altText: `${product.name} - Back`,
+          sortOrder: 1,
+          isPrimary: false,
+        },
+      });
+    }
   }
   console.log(`Created ${products.length} products with variants and images`);
 
-  // Create banners
+  // Create banners with Unsplash images
   const banners = [
     {
       title: "New Arrivals",
-      image: "https://placehold.co/1440x500/ffd232/000000?text=NEW+ARRIVALS+-+Up+to+50%25+Off",
+      image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1440&h=500&fit=crop&q=80",
       link: "/products?sort=newest",
       position: "home_top",
       isActive: true,
@@ -259,7 +306,7 @@ async function main() {
     },
     {
       title: "Men's Collection",
-      image: "https://placehold.co/1440x500/1e3a5f/ffffff?text=MEN%27S+COLLECTION",
+      image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1440&h=500&fit=crop&q=80",
       link: "/products?gender=MEN",
       position: "home_top",
       isActive: true,
@@ -267,7 +314,7 @@ async function main() {
     },
     {
       title: "Women's Collection",
-      image: "https://placehold.co/1440x500/dc2626/ffffff?text=WOMEN%27S+COLLECTION",
+      image: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1440&h=500&fit=crop&q=80",
       link: "/products?gender=WOMEN",
       position: "home_top",
       isActive: true,
@@ -279,6 +326,122 @@ async function main() {
     await prisma.banner.create({ data: banner });
   }
   console.log(`Created ${banners.length} banners`);
+
+  // Create customer addresses
+  const address1 = await prisma.address.create({
+    data: {
+      userId: customer.id,
+      fullName: "Test Customer",
+      phone: "9876543210",
+      addressLine1: "123 MG Road",
+      addressLine2: "Apt 4B",
+      city: "Mumbai",
+      state: "Maharashtra",
+      pincode: "400001",
+      isDefault: true,
+    },
+  });
+  const address2 = await prisma.address.create({
+    data: {
+      userId: customer.id,
+      fullName: "Test Customer",
+      phone: "9876543210",
+      addressLine1: "456 Brigade Road",
+      city: "Bangalore",
+      state: "Karnataka",
+      pincode: "560001",
+      isDefault: false,
+    },
+  });
+  console.log("Created 2 customer addresses");
+
+  // Create sample orders
+  // Get some variants for order items
+  const sampleVariants = await prisma.productVariant.findMany({
+    take: 5,
+    include: { product: true },
+  });
+
+  if (sampleVariants.length >= 3) {
+    // Order 1: Delivered
+    const order1 = await prisma.order.create({
+      data: {
+        userId: customer.id,
+        addressId: address1.id,
+        status: "DELIVERED",
+        totalAmount: sampleVariants[0].product.sellingPrice + sampleVariants[1].product.sellingPrice,
+        paymentMethod: "COD",
+        paymentStatus: "PAID",
+        trackingNumber: "TRACK123456789",
+      },
+    });
+    await prisma.orderItem.createMany({
+      data: [
+        {
+          orderId: order1.id,
+          variantId: sampleVariants[0].id,
+          quantity: 1,
+          price: sampleVariants[0].product.sellingPrice,
+        },
+        {
+          orderId: order1.id,
+          variantId: sampleVariants[1].id,
+          quantity: 1,
+          price: sampleVariants[1].product.sellingPrice,
+        },
+      ],
+    });
+
+    // Order 2: Shipped
+    const order2 = await prisma.order.create({
+      data: {
+        userId: customer.id,
+        addressId: address1.id,
+        status: "SHIPPED",
+        totalAmount: sampleVariants[2].product.sellingPrice * 2,
+        paymentMethod: "COD",
+        paymentStatus: "UNPAID",
+        trackingNumber: "TRACK987654321",
+      },
+    });
+    await prisma.orderItem.create({
+      data: {
+        orderId: order2.id,
+        variantId: sampleVariants[2].id,
+        quantity: 2,
+        price: sampleVariants[2].product.sellingPrice,
+      },
+    });
+
+    // Order 3: Pending
+    const order3 = await prisma.order.create({
+      data: {
+        userId: customer.id,
+        addressId: address2.id,
+        status: "PENDING",
+        totalAmount: sampleVariants[3].product.sellingPrice + sampleVariants[4].product.sellingPrice,
+        paymentMethod: "COD",
+        paymentStatus: "UNPAID",
+      },
+    });
+    await prisma.orderItem.createMany({
+      data: [
+        {
+          orderId: order3.id,
+          variantId: sampleVariants[3].id,
+          quantity: 1,
+          price: sampleVariants[3].product.sellingPrice,
+        },
+        {
+          orderId: order3.id,
+          variantId: sampleVariants[4].id,
+          quantity: 1,
+          price: sampleVariants[4].product.sellingPrice,
+        },
+      ],
+    });
+    console.log("Created 3 sample orders with items");
+  }
 
   console.log("\nSeed completed!");
   console.log("Admin login: admin@shop.com / admin123");

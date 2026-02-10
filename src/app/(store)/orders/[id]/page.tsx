@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { CheckCircle, MapPin, CreditCard, Package } from "lucide-react";
+import { CheckCircle, MapPin, CreditCard, Package, Truck, ArrowLeft } from "lucide-react";
 
 export async function generateMetadata({
   params,
@@ -63,6 +63,15 @@ export default async function OrderDetailPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
+      {/* Back link */}
+      <Link
+        href="/orders"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-gray-900 mb-6"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Orders
+      </Link>
+
       {/* Header */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -85,6 +94,17 @@ export default async function OrderDetailPage({
           {statusInfo?.label || order.status}
         </Badge>
       </div>
+
+      {/* Tracking */}
+      {order.trackingNumber && (
+        <div className="mb-6 flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <Truck className="h-5 w-5 text-blue-600" />
+          <div>
+            <p className="text-sm font-medium text-blue-900">Tracking Number</p>
+            <p className="text-sm text-blue-700">{order.trackingNumber}</p>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Order Items */}

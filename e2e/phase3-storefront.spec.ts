@@ -157,16 +157,16 @@ test.describe("Category Page", () => {
 
 test.describe("Product Detail", () => {
   test("renders product detail page", async ({ page }) => {
-    await page.goto("/products/classic-cotton-tshirt");
+    await page.goto("/products/anime-oversized-tee");
 
     // Product name
-    await expect(page.getByRole("heading", { name: "Classic Cotton T-Shirt" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Anime Oversized Tee" })).toBeVisible();
 
     // Brand - scope to main content area
     await expect(page.locator("main").getByText("SHOP", { exact: true }).first()).toBeVisible();
 
     // Price
-    await expect(page.getByText("₹499")).toBeVisible();
+    await expect(page.getByText("₹599")).toBeVisible();
 
     // Breadcrumb
     await expect(page.getByRole("link", { name: "Home" })).toBeVisible();
@@ -174,7 +174,7 @@ test.describe("Product Detail", () => {
   });
 
   test("color selector works", async ({ page }) => {
-    await page.goto("/products/classic-cotton-tshirt");
+    await page.goto("/products/anime-oversized-tee");
 
     // Should show color selector
     await expect(page.getByText("Select Color")).toBeVisible();
@@ -185,7 +185,7 @@ test.describe("Product Detail", () => {
   });
 
   test("size selector shows sizes", async ({ page }) => {
-    await page.goto("/products/classic-cotton-tshirt");
+    await page.goto("/products/anime-oversized-tee");
 
     await expect(page.getByText("Select Size")).toBeVisible();
 
@@ -196,13 +196,13 @@ test.describe("Product Detail", () => {
   });
 
   test("add to cart button present", async ({ page }) => {
-    await page.goto("/products/classic-cotton-tshirt");
+    await page.goto("/products/anime-oversized-tee");
 
     await expect(page.getByRole("button", { name: /Add to Cart/i })).toBeVisible();
   });
 
   test("product description and delivery info shown", async ({ page }) => {
-    await page.goto("/products/classic-cotton-tshirt");
+    await page.goto("/products/anime-oversized-tee");
 
     await expect(page.getByText("Product Description")).toBeVisible();
     await expect(page.getByText("Delivery & Returns")).toBeVisible();
@@ -210,16 +210,16 @@ test.describe("Product Detail", () => {
   });
 
   test("similar products section shown", async ({ page }) => {
-    await page.goto("/products/classic-cotton-tshirt");
+    await page.goto("/products/anime-oversized-tee");
 
     await expect(page.getByText("Similar Products")).toBeVisible();
   });
 
   test("SEO metadata is set", async ({ page }) => {
-    await page.goto("/products/classic-cotton-tshirt");
+    await page.goto("/products/anime-oversized-tee");
 
     const title = await page.title();
-    expect(title).toContain("Classic Cotton T-Shirt");
+    expect(title).toContain("Anime Oversized Tee");
   });
 });
 
@@ -261,7 +261,7 @@ test.describe("Storefront Console Errors", () => {
   for (const storePage of [
     { name: "homepage", path: "/" },
     { name: "products", path: "/products" },
-    { name: "product detail", path: "/products/classic-cotton-tshirt" },
+    { name: "product detail", path: "/products/anime-oversized-tee" },
     { name: "category", path: "/category/t-shirts" },
   ]) {
     test(`no console errors on ${storePage.name}`, async ({ page }) => {
