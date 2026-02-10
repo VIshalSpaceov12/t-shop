@@ -16,9 +16,11 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { MobileNav } from "./mobile-nav";
 import { SearchBar } from "./search-bar";
+import { useCart } from "@/hooks/use-cart";
 
 export function Navbar() {
   const { data: session } = useSession();
+  const { itemCount } = useCart();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
@@ -94,13 +96,15 @@ export function Navbar() {
           <Link href="/cart">
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="h-5 w-5" />
-              <Badge
-                variant="destructive"
-                className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-[10px] flex items-center justify-center"
-                data-testid="cart-badge"
-              >
-                0
-              </Badge>
+              {itemCount > 0 && (
+                <Badge
+                  variant="destructive"
+                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-[10px] flex items-center justify-center"
+                  data-testid="cart-badge"
+                >
+                  {itemCount}
+                </Badge>
+              )}
             </Button>
           </Link>
 

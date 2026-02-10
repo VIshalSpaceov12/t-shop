@@ -20,8 +20,8 @@ test.describe("Navbar & Footer", () => {
     // Login button (unauthenticated)
     await expect(page.locator("header").getByRole("link", { name: "Login" })).toBeVisible();
 
-    // Cart icon
-    await expect(page.locator("[data-testid='cart-badge']")).toBeVisible();
+    // Cart icon link exists
+    await expect(page.locator("header a[href='/cart']")).toBeVisible();
   });
 
   test("footer renders with all sections", async ({ page }) => {

@@ -39,6 +39,10 @@ export const categorySchema = z.object({
   image: z.string().optional(),
 });
 
+export const checkoutSchema = z.object({
+  addressId: z.string().min(1, "Please select a delivery address"),
+});
+
 export const bannerSchema = z.object({
   title: z.string().min(2, "Title is required"),
   image: z.string().min(1, "Image is required"),

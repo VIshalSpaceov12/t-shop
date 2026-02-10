@@ -147,6 +147,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         {/* Add to Cart */}
         <AddToCartButton
           variantId={selectedVariant?.id ?? null}
+          productId={product.id}
           productName={product.name}
         />
 
