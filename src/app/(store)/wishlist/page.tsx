@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import { ProductCard } from "@/components/store/product-card";
+import { WishlistCard } from "@/components/store/wishlist-card";
 import { Heart } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -57,7 +57,7 @@ export default async function WishlistPage() {
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {wishlist.map((item) => (
-            <ProductCard key={item.id} product={item.product} />
+            <WishlistCard key={item.id} product={item.product} />
           ))}
         </div>
       )}

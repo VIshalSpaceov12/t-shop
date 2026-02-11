@@ -35,9 +35,10 @@ interface ProductDetailClientProps {
     variants: Variant[];
     images: ProductImage[];
   };
+  isWishlisted?: boolean;
 }
 
-export function ProductDetailClient({ product }: ProductDetailClientProps) {
+export function ProductDetailClient({ product, isWishlisted = false }: ProductDetailClientProps) {
   const [selectedColor, setSelectedColor] = useState<string | null>(
     product.variants[0]?.color ?? null
   );
@@ -149,6 +150,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
           variantId={selectedVariant?.id ?? null}
           productId={product.id}
           productName={product.name}
+          isWishlisted={isWishlisted}
         />
 
         {/* Description */}

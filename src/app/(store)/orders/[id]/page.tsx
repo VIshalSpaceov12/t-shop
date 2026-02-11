@@ -5,9 +5,11 @@ import { formatPrice } from "@/lib/utils";
 import { ORDER_STATUSES } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { OrderStatusTimeline } from "@/components/store/order-status-timeline";
+import { CancelOrderButton } from "@/components/store/cancel-order-button";
 import Link from "next/link";
 import Image from "next/image";
-import { CheckCircle, MapPin, CreditCard, Package, Truck, ArrowLeft } from "lucide-react";
+import { CheckCircle, XCircle, MapPin, CreditCard, Package, Truck, ArrowLeft } from "lucide-react";
 
 export async function generateMetadata({
   params,
@@ -76,9 +78,15 @@ export default async function OrderDetailPage({
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <CheckCircle className="h-8 w-8 text-green-500" />
+            {order.status === "CANCELLED" ? (
+              <XCircle className="h-8 w-8 text-red-500" />
+            ) : (
+              <CheckCircle className="h-8 w-8 text-green-500" />
+            )}
             <h1 className="text-2xl font-bold text-gray-900">
-              Order Confirmed
+              {order.status === "CANCELLED"
+                ? "Order Cancelled"
+                : "Order Confirmed"}
             </h1>
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -105,6 +113,11 @@ export default async function OrderDetailPage({
           </div>
         </div>
       )}
+
+      {/* Order Status Timeline */}
+      <div className="mb-8">
+        <OrderStatusTimeline status={order.status} />
+      </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Order Items */}
@@ -211,6 +224,10 @@ export default async function OrderDetailPage({
               {formatPrice(order.totalAmount)}
             </p>
           </div>
+
+          {order.status === "PENDING" && (
+            <CancelOrderButton orderId={order.id} />
+          )}
 
           <Link href="/products">
             <Button className="w-full bg-yellow-400 text-gray-900 hover:bg-yellow-500">

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 import { ProductDetailClient } from "@/components/store/product-detail-client";
 import { ProductSection } from "@/components/store/product-section";
 import Link from "next/link";
@@ -47,6 +48,21 @@ export default async function ProductDetailPage({
 
   if (!product) notFound();
 
+  // Check if user has wishlisted this product
+  let isWishlisted = false;
+  const session = await auth();
+  if (session?.user?.id) {
+    const wishlistEntry = await prisma.wishlist.findUnique({
+      where: {
+        userId_productId: {
+          userId: session.user.id,
+          productId: product.id,
+        },
+      },
+    });
+    isWishlisted = !!wishlistEntry;
+  }
+
   // Similar products (same category, different product)
   const similarProducts = await prisma.product.findMany({
     where: {
@@ -90,7 +106,7 @@ export default async function ProductDetailPage({
       </nav>
 
       {/* Product Detail */}
-      <ProductDetailClient product={product} />
+      <ProductDetailClient product={product} isWishlisted={isWishlisted} />
 
       {/* Similar Products */}
       {similarProducts.length > 0 && (

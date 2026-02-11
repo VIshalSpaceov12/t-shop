@@ -96,6 +96,7 @@ export default async function ProductsPage({
     }),
     prisma.product.count({ where }),
     prisma.category.findMany({
+      where: { parentId: { not: null } },
       orderBy: { name: "asc" },
       select: { id: true, name: true, slug: true },
     }),
