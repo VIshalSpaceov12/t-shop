@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionOrBearer } from "@/lib/mobile-auth";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -22,13 +22,13 @@ export async function POST(request: NextRequest) {
     where: { id: addressId },
   });
 
-  if (!address || address.userId !== session.user.id) {
+  if (!address || address.userId !== user.id) {
     return NextResponse.json({ error: "Invalid address" }, { status: 400 });
   }
 
   // Get cart with items
   const cart = await prisma.cart.findUnique({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
     include: {
       items: {
         include: {
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
     // Create order
     const newOrder = await tx.order.create({
       data: {
-        userId: session.user.id,
+        userId: user.id,
         addressId,
         totalAmount,
         status: "PENDING",

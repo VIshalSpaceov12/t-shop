@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionOrBearer } from "@/lib/mobile-auth";
 import { prisma } from "@/lib/prisma";
 
-export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) {
+export async function GET(request: NextRequest) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const cart = await prisma.cart.findUnique({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
     include: {
       items: {
         include: {
@@ -56,8 +56,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -89,12 +89,12 @@ export async function POST(request: NextRequest) {
 
   // Get or create cart
   let cart = await prisma.cart.findUnique({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
   });
 
   if (!cart) {
     cart = await prisma.cart.create({
-      data: { userId: session.user.id },
+      data: { userId: user.id },
     });
   }
 

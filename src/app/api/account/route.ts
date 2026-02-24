@@ -1,29 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionOrBearer } from "@/lib/mobile-auth";
 import { prisma } from "@/lib/prisma";
 import { profileSchema } from "@/lib/validators";
 
-export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) {
+export async function GET(request: NextRequest) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
     select: { id: true, name: true, email: true, phone: true, createdAt: true },
   });
 
-  if (!user) {
+  if (!dbUser) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
-  return NextResponse.json(user);
+  return NextResponse.json(dbUser);
 }
 
 export async function PUT(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -37,7 +37,7 @@ export async function PUT(request: NextRequest) {
   }
 
   const updated = await prisma.user.update({
-    where: { id: session.user.id },
+    where: { id: user.id },
     data: {
       name: result.data.name,
       phone: result.data.phone || null,

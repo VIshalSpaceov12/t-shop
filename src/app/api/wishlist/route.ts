@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionOrBearer } from "@/lib/mobile-auth";
 import { prisma } from "@/lib/prisma";
 
-export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) {
+export async function GET(request: NextRequest) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const wishlist = await prisma.wishlist.findMany({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
     include: {
       product: {
         select: {
@@ -37,8 +37,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
   // Toggle: if exists, remove; if not, add
   const existing = await prisma.wishlist.findUnique({
     where: {
-      userId_productId: { userId: session.user.id, productId },
+      userId_productId: { userId: user.id, productId },
     },
   });
 
@@ -64,15 +64,15 @@ export async function POST(request: NextRequest) {
   }
 
   await prisma.wishlist.create({
-    data: { userId: session.user.id, productId },
+    data: { userId: user.id, productId },
   });
 
   return NextResponse.json({ wishlisted: true }, { status: 201 });
 }
 
 export async function DELETE(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -87,7 +87,7 @@ export async function DELETE(request: NextRequest) {
   }
 
   await prisma.wishlist.deleteMany({
-    where: { userId: session.user.id, productId },
+    where: { userId: user.id, productId },
   });
 
   return NextResponse.json({ success: true });

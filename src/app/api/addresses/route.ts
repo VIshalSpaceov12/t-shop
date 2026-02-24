@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionOrBearer } from "@/lib/mobile-auth";
 import { prisma } from "@/lib/prisma";
 import { addressSchema } from "@/lib/validators";
 
-export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) {
+export async function GET(request: NextRequest) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const addresses = await prisma.address.findMany({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
     orderBy: { isDefault: "desc" },
   });
 
@@ -18,8 +18,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
   // If marking as default, unset other defaults
   if (data.isDefault) {
     await prisma.address.updateMany({
-      where: { userId: session.user.id, isDefault: true },
+      where: { userId: user.id, isDefault: true },
       data: { isDefault: false },
     });
   }
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
   const address = await prisma.address.create({
     data: {
       ...data,
-      userId: session.user.id,
+      userId: user.id,
       isDefault: data.isDefault ?? false,
     },
   });

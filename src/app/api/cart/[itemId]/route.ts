@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionOrBearer } from "@/lib/mobile-auth";
 import { prisma } from "@/lib/prisma";
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ itemId: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -30,7 +30,7 @@ export async function PUT(
     },
   });
 
-  if (!cartItem || cartItem.cart.userId !== session.user.id) {
+  if (!cartItem || cartItem.cart.userId !== user.id) {
     return NextResponse.json(
       { error: "Cart item not found" },
       { status: 404 }
@@ -53,11 +53,11 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ itemId: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getSessionOrBearer(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -69,7 +69,7 @@ export async function DELETE(
     include: { cart: { select: { userId: true } } },
   });
 
-  if (!cartItem || cartItem.cart.userId !== session.user.id) {
+  if (!cartItem || cartItem.cart.userId !== user.id) {
     return NextResponse.json(
       { error: "Cart item not found" },
       { status: 404 }
